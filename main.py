@@ -40,7 +40,7 @@ def check_devman_attempts():
         try:
             response = requests.get(request_url, headers=headers, params=params, timeout=95).json()
         except requests.exceptions.ReadTimeout as error:
-            logger.error(error)
+            logger.debug(error)
             continue
         except ConnectionError as error:
             logger.error(error)
