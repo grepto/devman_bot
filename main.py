@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -44,6 +45,7 @@ def check_devman_attempts():
             continue
         except ConnectionError as error:
             logger.error(error)
+            time.sleep(5)
             continue
         response_data = response
         status = response_data['status']
