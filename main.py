@@ -15,7 +15,7 @@ DEVMAN_ENDPOINT = os.getenv('DEVMAN_ENDPOINT')
 logger = get_logger('check_devman_attempts')
 
 
-def send_attempts_result(attempts):
+def send_telegram_msg(attempts):
     for attempt in attempts:
         lesson_title = attempt['lesson_title']
         lesson_result = 'К сожалению, в работе нашлись ошибки' if attempt['is_negative'] \
@@ -53,7 +53,7 @@ def check_devman_attempts():
         if status == 'found':
             logger.debug(f'New feedback\n {response}')
             params['timestamp'] = response['last_attempt_timestamp']
-            send_attempts_result(response['new_attempts'])
+            send_telegram_msg(response['new_attempts'])
 
 
 def main():
