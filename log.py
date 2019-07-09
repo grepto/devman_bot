@@ -33,7 +33,7 @@ def get_logger(logger_name):
             'telegram': {
                 'class': 'log.TelegramHandler',
                 'formatter': 'tg_Formatter',
-                'level': 'WARNING',
+                'level': 'INFO',
             }
         },
         'loggers': {

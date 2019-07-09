@@ -48,10 +48,6 @@ def check_devman_attempts():
             logger.error(error)
             time.sleep(5)
             continue
-        except ZeroDivisionError as error:
-            logger.error(error)
-            time.sleep(500)
-            continue
         response_data = response
         status = response_data['status']
         if status == 'timeout':
