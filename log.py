@@ -26,12 +26,12 @@ def get_logger(logger_name):
                 'filename': 'requests.log'
             },
             'console': {
-                'class': 'TelegramHandler',
+                'class': 'logging.StreamHandler',
                 'formatter': 'base_Formatter',
                 'level': LOG_LEVEL,
             },
             'telegram': {
-                'class': 'logging.StreamHandler',
+                'class': 'log.TelegramHandler',
                 'formatter': 'base_Formatter',
                 'level': 'WARNING',
             }
