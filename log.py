@@ -39,7 +39,7 @@ def get_logger(logger_name):
         },
         'loggers': {
             logger_name: {
-                'handlers': ['console'],
+                'handlers': ['console', 'telegram'],
                 'level': LOG_LEVEL,
             }
         },
