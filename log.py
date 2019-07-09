@@ -14,6 +14,7 @@ class TelegramHandler(logging.Handler):
     def emit(self, record):
         log_entry = self.format(record)
         send_message(f'Бот упал с ошибкой\n{log_entry}')
+        print(f'Бот упал с ошибкой\n{log_entry}')
 
 
 def get_logger(logger_name):
