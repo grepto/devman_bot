@@ -13,7 +13,6 @@ class TelegramHandler(logging.Handler):
 
     def emit(self, record):
         log_entry = self.format(record)
-        send_message('Произошла ошибка:')
         send_message(log_entry)
 
 
@@ -33,7 +32,7 @@ def get_logger(logger_name):
             },
             'telegram': {
                 'class': 'log.TelegramHandler',
-                'formatter': 'base_Formatter',
+                'formatter': 'tg_Formatter',
                 'level': 'WARNING',
             }
         },
@@ -46,7 +45,10 @@ def get_logger(logger_name):
         'formatters': {
             'base_Formatter': {
                 'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            }
+            },
+            'tg_Formatter': {
+                'format': '%(asctime)s\n%(name)s\n%(levelname)s\n%(message)s',
+            },
         }
     }
 
