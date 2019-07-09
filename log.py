@@ -3,9 +3,17 @@ import os
 import logging.config
 
 from dotenv import load_dotenv
+from tg import send_message
 
 load_dotenv()
 LOG_LEVEL = os.getenv('LOG_LEVEL')
+
+
+class TelegramHandler(logging.Handler):
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        send_message(f'Бот упал с ошибкой\n{log_entry}')
 
 
 def get_logger(logger_name):
@@ -18,9 +26,14 @@ def get_logger(logger_name):
                 'filename': 'requests.log'
             },
             'console': {
-                'class': 'logging.StreamHandler',
+                'class': 'TelegramHandler',
                 'formatter': 'base_Formatter',
                 'level': LOG_LEVEL,
+            },
+            'telegram': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'base_Formatter',
+                'level': 'WARNING',
             }
         },
         'loggers': {

@@ -39,6 +39,7 @@ def check_devman_attempts():
     while True:
         logger.debug(f'New request with timestamp {params["timestamp"]}')
         try:
+            print(22/0)
             response = requests.get(request_url, headers=headers, params=params, timeout=95).json()
         except requests.exceptions.ReadTimeout as error:
             logger.debug(error)
@@ -46,6 +47,10 @@ def check_devman_attempts():
         except ConnectionError as error:
             logger.error(error)
             time.sleep(5)
+            continue
+        except ZeroDivisionError as error:
+            logger.error(error)
+            time.sleep(500)
             continue
         response_data = response
         status = response_data['status']
