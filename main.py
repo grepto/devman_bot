@@ -1,22 +1,24 @@
+import logging
 import os
+import logging.config
 from datetime import datetime
 import time
 
 import requests
 from dotenv import load_dotenv
 
-from log import get_logger
 from tg import send_message
+import log_handlers
 
 load_dotenv()
 
 TOKEN = os.getenv('DEVMAN_TOKEN')
 DEVMAN_ENDPOINT = os.getenv('DEVMAN_ENDPOINT')
-
-logger = get_logger('check_devman_attempts')
+LOG_LEVEL = os.getenv('LOG_LEVEL')
 
 
 def send_telegram_msg(attempts):
+    logger = logging.getLogger('check_devman_attempts')
     for attempt in attempts:
         lesson_title = attempt['lesson_title']
         lesson_result = 'К сожалению, в работе нашлись ошибки' if attempt['is_negative'] \
@@ -28,6 +30,7 @@ def send_telegram_msg(attempts):
 
 
 def check_devman_attempts():
+    logger = logging.getLogger('check_devman_attempts')
     logger.info('Script started')
     headers = {
         'Authorization': TOKEN
@@ -59,6 +62,41 @@ def check_devman_attempts():
 
 
 def main():
+    log_config = {
+        'version': 1,
+        'handlers': {
+            'file_Handler': {
+                'class': 'logging.FileHandler',
+                'formatter': 'base_Formatter',
+                'filename': 'requests.log'
+            },
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'base_Formatter',
+                'level': LOG_LEVEL,
+            },
+            'telegram': {
+                'class': 'log_handlers.TelegramHandler',
+                'formatter': 'tg_Formatter',
+                'level': 'INFO',
+            }
+        },
+        'loggers': {
+            'check_devman_attempts': {
+                'handlers': ['console', 'telegram'],
+                'level': LOG_LEVEL,
+            }
+        },
+        'formatters': {
+            'base_Formatter': {
+                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            },
+            'tg_Formatter': {
+                'format': '%(asctime)s\n%(name)s\n%(levelname)s\n%(message)s',
+            },
+        }
+    }
+    logging.config.dictConfig(log_config)
     check_devman_attempts()
 
 
