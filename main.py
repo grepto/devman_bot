@@ -40,6 +40,13 @@ def check_devman_attempts():
     }
     request_url = DEVMAN_ENDPOINT + '/api/long_polling'
     while True:
+        now = datetime.datetime.now()
+        day_start = now.replace(hour=8, minute=0, second=0, microsecond=0)
+        day_end = now.replace(hour=23, minute=59, second=59, microsecond=0)
+        if day_start < now < day_end:
+            delta = day_start - now
+            time.sleep(delta.seconds)
+
         logger.debug(f'New request with timestamp {params["timestamp"]}')
         try:
             response = requests.get(request_url, headers=headers, params=params, timeout=95).json()
